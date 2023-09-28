@@ -3,7 +3,7 @@
 </p>
 
 <div align="center">
-    <b style="font-size: 35px;">ShopLuxe</b>
+    <b style="font-size: 35px;">SmartShop</b>
     <br>
     An app for elevate your style
 </div>
@@ -54,4 +54,4 @@
   - Utilized the Provider package for efficient cart management.
   - Ensured data integrity and real-time updates for a smooth shopping experience.nctionality, making it effortless to find relevant content within the Quran.
 
-[Download ShopLuxe](shopluxe.apk)
+[Download SmartShop](smartshop.apk)

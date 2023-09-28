@@ -44,7 +44,7 @@ class _ProductListState extends State<ProductList> {
               Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Text(
-                  "ShopLuxe",
+                  "SmartShop",
                   style: TextStyle(
                     fontSize: 33,
                     fontWeight: FontWeight.bold,
