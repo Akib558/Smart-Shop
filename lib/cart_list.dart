@@ -13,7 +13,7 @@ class CartList extends StatelessWidget {
     // final cart = Provider.of<CartProvider>(context).cart;
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Cart')),
+        title: const Center(child: Text('Cart')),
       ),
       body: ListView.builder(
         itemCount: cart.length,
@@ -31,14 +31,14 @@ class CartList extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text(
+                        title: const Text(
                           'Delete Product',
                           style: TextStyle(
                             fontSize: 20,
                           ),
                         ),
-                        content:
-                            Text('Are you sure want to delete item from cart?'),
+                        content: const Text(
+                            'Are you sure want to delete item from cart?'),
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -48,20 +48,20 @@ class CartList extends StatelessWidget {
                                 // Provider.of<CartProvider>(context, listen: false).removeProduct(cartItem);
                                 Navigator.of(context).pop();
                               },
-                              child: Text('Yes',
+                              child: const Text('Yes',
                                   style: TextStyle(color: Colors.red))),
                           TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('No',
+                              child: const Text('No',
                                   style: TextStyle(color: Colors.green))),
                         ],
                       );
                     },
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete,
                   color: Colors.red,
                 )),
@@ -70,7 +70,7 @@ class CartList extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             subtitle: Text(
-              '\৳' + cartItem['price'].toString(),
+              '৳${cartItem['price']}',
             ),
           );
         },

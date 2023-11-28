@@ -34,11 +34,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           'sizes': selectedFilter,
         },
       );
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Successfully added!"),
       ));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Please select a size option"),
       ));
     }
@@ -58,24 +58,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final List<int> filters = widget.product['sizes'] as List<int>;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Details'),
+        title: const Text('Details'),
         centerTitle: true,
       ),
       body: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         child: Column(
           children: [
             Center(
               child: Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
                 ),
               ),
             ),
             // SizedBox(height: 100,),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Image.asset(
@@ -83,24 +83,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 height: 250,
               ),
             ),
-            Spacer(
+            const Spacer(
               flex: 2,
             ),
             // SizedBox(height: 80,),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color.fromARGB(255, 239, 236, 236),
+                color: const Color.fromARGB(255, 239, 236, 236),
               ),
               child: Column(children: [
                 Text(
-                  '\৳$price',
-                  style: TextStyle(
+                  '৳$price',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 SizedBox(
@@ -111,7 +111,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     itemBuilder: (context, index) {
                       final filter = filters[index];
                       return Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             // vertical: 20,
                             horizontal: 8),
                         child: GestureDetector(
@@ -124,17 +124,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             backgroundColor: selectedFilter == filter
                                 ? Theme.of(context).colorScheme.primary
                                 : const Color.fromRGBO(169, 170, 171, 111),
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Color.fromARGB(255, 46, 46, 46),
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             label: Padding(
-                              padding: EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(0.0),
                               child: Text(
                                 '$filter',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                 ),
                               ),
@@ -146,7 +146,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.all(30.0),
                   child: ElevatedButton.icon(
                     onPressed: onTap,
@@ -156,18 +156,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      minimumSize: Size(double.infinity, 50),
+                      minimumSize: const Size(double.infinity, 50),
                       elevation: 5,
                     ),
 
-                    label: Text(
+                    label: const Text(
                       "Add to Cart",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.shopping_cart,
                       color: Colors.black,
                     ),

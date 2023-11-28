@@ -19,15 +19,15 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 0;
 
   List<Widget> pages = [
-    ProductList(),
-    CartList(),
+    const ProductList(),
+    const CartList(),
   ];
 
   @override
   Widget build(BuildContext context) {
-      
     return Scaffold(
-      body: IndexedStack( // for maintain scroll position
+      body: IndexedStack(
+        // for maintain scroll position
         index: currentPage,
         children: pages,
       ),
@@ -37,16 +37,20 @@ class _HomePageState extends State<HomePage> {
         unselectedFontSize: 0,
         // backgroundColor: Theme.of(context).colorScheme.primary,
         currentIndex: currentPage,
-        onTap: (value){
+        onTap: (value) {
           setState(() {
             currentPage = value;
           });
         },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home),
-          label: '',),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart),
-          label: '',),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: '',
+          ),
         ],
       ),
     );
