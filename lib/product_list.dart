@@ -13,8 +13,8 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
-  final List<String> filters = const ['All', 'Addidas', 'Nike', 'Bata'];
-  late String selectedFilter;
+  late List filters;
+  String selectedFilter = "-1";
   int currentPage = 0;
   late List mainData;
 
@@ -35,10 +35,24 @@ class _ProductListState extends State<ProductList> {
     }
   }
 
+  Future<List> fetchCatagories() async {
+    var url = Uri.parse('https://fakestoreapi.com/products/categories');
+    try {
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        throw Exception('Failed to fetch catagories');
+      }
+    } catch (error) {
+      throw Exception('Error fetching catagories');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    selectedFilter = filters[0];
+    // selectedFilter = filters[0];
     // fetchData();
   }
 
@@ -58,113 +72,134 @@ class _ProductListState extends State<ProductList> {
       ),
     );
     return SafeArea(
-      child: Column(
-        children: [
-          const Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  "SmartShop",
-                  style: TextStyle(
-                    fontSize: 33,
-                    fontWeight: FontWeight.bold,
-                  ),
+      child: Column(children: [
+        const Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                "SmartShop",
+                style: TextStyle(
+                  fontSize: 33,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              // Expanded(
-              //   child: TextField(
-              //     decoration: InputDecoration(
-              //       hintText: "Search",
-              //       prefixIcon: Icon(Icons.search),
-              //       border: border,
-              //       enabledBorder: border,
-              //       focusedBorder: border,
-              //     ),
-              //   ),
-              // ),
-            ],
-          ),
-          SizedBox(
-            height: 40,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: filters.length,
-              itemBuilder: (context, index) {
-                final filter = filters[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      // vertical: 20,
-                      horizontal: 8),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedFilter = filter;
-                      });
-                    },
-                    child: Chip(
-                      backgroundColor: selectedFilter == filter
-                          ? Theme.of(context).colorScheme.primary
-                          : const Color.fromRGBO(169, 170, 171, 111),
-                      side: const BorderSide(
-                        color: Color.fromARGB(255, 249, 249, 249),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      label: Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Text(
-                          filter,
-                          style: const TextStyle(
-                            fontSize: 12,
+            ),
+            // Expanded(
+            //   child: TextField(
+            //     decoration: InputDecoration(
+            //       hintText: "Search",
+            //       prefixIcon: Icon(Icons.search),
+            //       border: border,
+            //       enabledBorder: border,
+            //       focusedBorder: border,
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
+        SizedBox(
+          height: 40,
+          child: FutureBuilder(
+            future: fetchCatagories(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData) {
+                return const Center(child: Text('No data available'));
+              } else {
+                List<dynamic> filters = snapshot.data!;
+                return Expanded(
+                    child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: filters.length,
+                  itemBuilder: (context, index) {
+                    final filter = filters[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          // vertical: 20,
+                          horizontal: 8),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedFilter = filter;
+                          });
+                        },
+                        child: Chip(
+                          backgroundColor: selectedFilter == filter
+                              ? Theme.of(context).colorScheme.primary
+                              : const Color.fromRGBO(169, 170, 171, 111),
+                          side: const BorderSide(
+                            color: Color.fromARGB(255, 249, 249, 249),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          label: Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: Text(
+                              filter,
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
+                ));
+                // return ListView.builder(
+                //   scrollDirection: Axis.horizontal,
+                //   itemCount: dataList.length,
+                //   itemBuilder: (BuildContext context, int index) {},
+                // );
+              }
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        FutureBuilder(
+            future: fetchData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData) {
+                return const Center(child: Text('No data available'));
+              } else {
+                List<dynamic> dataList = snapshot.data!;
+                return Expanded(
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: dataList.length,
+                      itemBuilder: (context, index) {
+                        // return Text(dataList[index]['title']);
+                        return ProductCart(
+                          title: dataList[index]['title'] as String,
+                          price: dataList[index]['price'] * 1.0 as double,
+                          image: dataList[index]['image'] as String,
+                          index: index,
+                        );
+                      }),
                 );
-              },
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          FutureBuilder(
-              future: fetchData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData) {
-                  return const Center(child: Text('No data available'));
-                } else {
-                  List<dynamic> dataList = snapshot.data!;
-                  return Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: dataList.length,
-                        itemBuilder: (context, index) {
-                          // return Text(dataList[index]['title']);
-                          return ProductCart(
-                            title: dataList[index]['title'] as String,
-                            price: dataList[index]['price'] * 1.0 as double,
-                            image: dataList[index]['image'] as String,
-                            index: index,
-                          );
-                        }),
-                  );
-                  // return ListView.builder(
-                  //   scrollDirection: Axis.horizontal,
-                  //   itemCount: dataList.length,
-                  //   itemBuilder: (BuildContext context, int index) {},
-                  // );
-                }
-              }),
-        ],
-      ),
+                // return ListView.builder(
+                //   scrollDirection: Axis.horizontal,
+                //   itemCount: dataList.length,
+                //   itemBuilder: (BuildContext context, int index) {},
+                // );
+              }
+            }),
+      ]),
+      // ];
     );
+
+    // );
   }
 }
 
