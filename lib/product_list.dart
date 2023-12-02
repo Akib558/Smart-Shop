@@ -111,8 +111,7 @@ class _ProductListState extends State<ProductList> {
                 return const Center(child: Text('No data available'));
               } else {
                 List<dynamic> filters = snapshot.data!;
-                return Expanded(
-                    child: ListView.builder(
+                return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: filters.length,
                   itemBuilder: (context, index) {
@@ -125,6 +124,7 @@ class _ProductListState extends State<ProductList> {
                         onTap: () {
                           setState(() {
                             selectedFilter = filter;
+                            print(selectedFilter);
                           });
                         },
                         child: Chip(
@@ -150,7 +150,7 @@ class _ProductListState extends State<ProductList> {
                       ),
                     );
                   },
-                ));
+                );
                 // return ListView.builder(
                 //   scrollDirection: Axis.horizontal,
                 //   itemCount: dataList.length,
@@ -180,12 +180,24 @@ class _ProductListState extends State<ProductList> {
                       itemCount: dataList.length,
                       itemBuilder: (context, index) {
                         // return Text(dataList[index]['title']);
-                        return ProductCart(
-                          title: dataList[index]['title'] as String,
-                          price: dataList[index]['price'] * 1.0 as double,
-                          image: dataList[index]['image'] as String,
-                          index: index,
-                        );
+                        if (selectedFilter == '-1') {
+                          return ProductCart(
+                            title: dataList[index]['title'] as String,
+                            price: dataList[index]['price'] * 1.0 as double,
+                            image: dataList[index]['image'] as String,
+                            index: index,
+                          );
+                        } else {
+                          if (dataList[index]['category'] == selectedFilter) {
+                            return ProductCart(
+                              title: dataList[index]['title'] as String,
+                              price: dataList[index]['price'] * 1.0 as double,
+                              image: dataList[index]['image'] as String,
+                              index: index,
+                            );
+                          }
+                        }
+                        return null;
                       }),
                 );
                 // return ListView.builder(
